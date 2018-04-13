@@ -1,14 +1,14 @@
 package tech.ryanqyang;
 
-import org.opencv.core.Core;
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
+import java.io.File;
 
 public class Main {
 
     public static void main(String[] args) {
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-        Mat mat = Mat.eye(3, 3, CvType.CV_8UC1);
-        System.out.println("mat = " + mat.dump());
+        File image1 = new File("/Users/ryanyang/Desktop/frametest/frame1.jpg");
+        File image2 = new File("/Users/ryanyang/Desktop/frametest/frame2.jpg");
+
+        MediaLoader test = new MediaLoader(image1, image2);
+
     }
 }
