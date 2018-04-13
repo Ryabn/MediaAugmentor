@@ -14,7 +14,7 @@ public class FrameData {
      * @return frameIndex
      */
     public int getFrameIndex() {
-        return frameIndex;
+        return this.frameIndex;
     }
 
 

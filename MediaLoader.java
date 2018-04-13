@@ -28,7 +28,7 @@ public class MediaLoader {
 
         }
     }
-
+///Users/ryanyang/Desktop/frametest/output
     /**
      * constructor used for testing frame generator algorithm
      * takes in 2 images and inserts one between
@@ -44,13 +44,15 @@ public class MediaLoader {
             frames.add(ImageIO.read(image1));
             frames.add(ImageIO.read(image2));
 
-            System.out.print(frames.toString());
-
         }catch(IOException e){
 
             e.printStackTrace();
 
         }
+    }
+
+    public ArrayList<BufferedImage> getFrames() {
+        return frames;
     }
 
     /**
@@ -84,5 +86,15 @@ public class MediaLoader {
 
 
         return data;
+    }
+
+    public void saveImage( BufferedImage generatedImage ){
+        File outputFile = new File("/Users/ryanyang/Desktop/frametest/output/test.jpg");
+
+        try{
+            ImageIO.write(generatedImage, "jpg", outputFile);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
 }
