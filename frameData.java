@@ -6,21 +6,42 @@ import java.util.ArrayList;
 public class FrameData {
 
     private int frameIndex;
-
+    private int height;
+    private int width;
     private ArrayList<ArrayList<Integer>> RGBValues;
 
+    /**
+     * constructor for image data
+     *
+     * @param frameIndex
+     * @param image
+     */
     public FrameData(int frameIndex, BufferedImage image){
         this.frameIndex = frameIndex;
+        this.height = image.getHeight();
+        this.width = image.getWidth();
         storeImageData(image);
     }
 
+    public FrameData(){
+
+    }
+
     /**
-     * returns frame index in media that data refers to
+     * getters for data members
      *
-     * @return frameIndex
      */
     public int getFrameIndex() {
         return this.frameIndex;
+    }
+    public int getHeight() {
+        return height;
+    }
+    public int getWidth() {
+        return width;
+    }
+    public ArrayList<ArrayList<Integer>> getRGBValues() {
+        return RGBValues;
     }
 
     /**
@@ -45,14 +66,8 @@ public class FrameData {
         for(int iX = 0; iX < image.getHeight(); iX++){
             RGBValues.add( new ArrayList<Integer>());
             for(int iY = 0; iY < image.getWidth(); iY++){
-                if(image.getRGB(iX,iY)!= -1){
-                    System.out.println("( " +  iX + ", "  + iY + " ) " + image.getRGB(iX, iY));
-                }
                 RGBValues.get(iX).add(iY, image.getRGB(iX, iY));
-
             }
         }
-
     }
-
 }
