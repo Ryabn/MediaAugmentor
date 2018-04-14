@@ -11,10 +11,10 @@ public class Main {
 
         MediaLoader test = new MediaLoader(image1, image2);
 
+        test.compareFrames( 0 , 1 );
+        //BufferedImage imageGenerated = test.getFrames().get(1);
 
-        BufferedImage imageGenerated = test.getFrames().get(0);
-
-        test.saveImage(imageGenerated);
+        //test.saveImage(imageGenerated);
 
     }
 }

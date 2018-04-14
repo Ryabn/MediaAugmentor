@@ -28,7 +28,6 @@ public class MediaLoader {
 
         }
     }
-///Users/ryanyang/Desktop/frametest/output
     /**
      * constructor used for testing frame generator algorithm
      * takes in 2 images and inserts one between
@@ -69,8 +68,8 @@ public class MediaLoader {
     }
 
     public void compareFrames(int firstIndex, int secondIndex){
-        FrameData frame1 = analyzeFrames(firstIndex);
-        FrameData frame2 = analyzeFrames(secondIndex);
+        FrameData frame1 = analyzeFrames(firstIndex, this.frames.get(firstIndex));
+        //FrameData frame2 = analyzeFrames(secondIndex, this.frames.get(secondIndex));
 
 
     }
@@ -81,8 +80,8 @@ public class MediaLoader {
      *
      * @param frameIndex
      */
-    public FrameData analyzeFrames( int frameIndex ){
-        FrameData data = new FrameData(frameIndex);
+    public FrameData analyzeFrames( int frameIndex, BufferedImage image ){
+        FrameData data = new FrameData(frameIndex, image);
 
 
         return data;
