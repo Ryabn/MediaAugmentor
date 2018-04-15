@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static java.awt.image.BufferedImage.*;
 
 public class MediaLoader {
 
@@ -53,11 +53,17 @@ public class MediaLoader {
      *
      */
     public void splitIntoFrames() throws Exception{
+        //if gif
+        splitGif();
+
 //        try(mediaFile.canRead()){
 //
 //        }catch(IOException e){
 //
 //        }
+    }
+    public void splitGif(){
+
     }
 
     public void compareFrames(int firstIndex, int secondIndex){
@@ -66,25 +72,57 @@ public class MediaLoader {
 
 
         ArrayList<ArrayList<Integer>> generated = new ArrayList<>();
-        //FrameData generatedFrame = new FrameData();
 
         for(int iX = 0; iX < frame1.getHeight(); iX++){
             generated.add(iX, new ArrayList<Integer>());
             for(int iY = 0; iY < frame1.getWidth(); iY++){
-                int pixelValue = frame1.getRGBValues().get(iX).get(iY);
-                if(pixelValue == frame2.getRGBValues().get(iX).get(iY)){
-                    generated.get(iX).add(iY, pixelValue);
-                }else{
-                    generated.get(iX).add(iY, 0);
-                }
+                int pixelValue1 = frame1.getRGBValues().get(iX).get(iY);
+                int pixelValue2 = frame2.getRGBValues().get(iX).get(iY);
+                generated.get(iX).add(iY, averagePixelValues(pixelValue1, pixelValue2));
             }
         }
-        createImage(generated, frame1.getWidth(), frame1.getHeight());
+        BufferedImage created = createImage(generated, frame1.getWidth(), frame1.getHeight());
     }
 
-    public void createImage(ArrayList<ArrayList<Integer>> imageData, int width, int height){
-        BufferedImage generatedImage = new BufferedImage(width, height, TYPE_INT_ARGB);
-        saveImage(generatedImage);
+    /**
+     * Gets two pixel values as integers (argb format)
+     * @see FrameData storeImageData method
+     *
+     * @param pixel1
+     * @param pixel2
+     * @return
+     */
+    public int averagePixelValues(int pixel1, int pixel2){
+
+        int a1 = (pixel1 >> 24) & 0xff;
+        int r1 = (pixel1 >> 16) & 0xff;
+        int g1 = (pixel1 >> 8) & 0xff;
+        int b1 = (pixel1) & 0xff;
+
+        int a2 = (pixel2 >> 24) & 0xff;
+        int r2 = (pixel2 >> 16) & 0xff;
+        int g2 = (pixel2 >> 8) & 0xff;
+        int b2 = (pixel2) & 0xff;
+
+        return (( (a1+a2)/2 << 24 ) | ( (r1+r2)/2 << 16 ) | ( (g1+g2)/2 << 8 ) | (b1+b2)/2);
+    }
+
+    /**
+     * Turn 2d arraylist of pixel values into a BufferedImage object
+     *
+     * @param imageData
+     * @param width
+     * @param height
+     */
+    public BufferedImage createImage(ArrayList<ArrayList<Integer>> imageData, int width, int height){
+        BufferedImage generatedImage = new BufferedImage(width, height, TYPE_INT_RGB);
+        for(int iX = 0; iX < width; iX++){
+
+            for(int iY = 0; iY < height; iY++){
+                generatedImage.setRGB(iX, iY, imageData.get(iX).get(iY));
+            }
+        }
+        return generatedImage;
     }
 
     /**
