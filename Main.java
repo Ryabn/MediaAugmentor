@@ -14,10 +14,10 @@ public class Main {
 //        File image2 = new File("/Users/ryanyang/Desktop/frametest/in1/frame2.jpg");
 //        File image3 = new File("/Users/ryanyang/Desktop/frametest/in1/frame3.jpg");
 //        File image4 = new File("/Users/ryanyang/Desktop/frametest/in1/frame4.jpg");
-        File testGif = new File("/Users/ryanyang/Desktop/frametest/test1.gif");
-        File outputFile = new File("/Users/ryanyang/Desktop/frametest/output");
+        File testGif = new File("/Users/ryanyang/Desktop/frametest/newtest/test1.gif");
+        //File outputFile = new File("/Users/ryanyang/Desktop/frametest/output");
 
-        MediaLoader test = new MediaLoader(testGif, outputFile);
+        MediaLoader test = new MediaLoader(testGif);
 
         //test.compareFrames( 0 , 1 );
         //BufferedImage imageGenerated = test.getFrames().get(1);

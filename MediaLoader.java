@@ -14,44 +14,67 @@ import java.util.ArrayList;
 import static java.awt.image.BufferedImage.*;
 
 public class MediaLoader {
-
-    private File outputFile;
     private File inputFile;
-    private ArrayList<BufferedImage> frames;
+    private File outputFile;
+    private BufferedImage BIFrame1;
+    private BufferedImage BIFrame2;
+    private ArrayList<File> fileLocations;
 
     /**
-     * General constructor that takes in a media file and splits it into frames, if possible
+     * MediaLoader constructor
      *
      * @param inputFile
      */
-    public MediaLoader(File inputFile, File outputFile){
+    public MediaLoader(File inputFile){
         this.inputFile = inputFile;
-        this.outputFile = outputFile;
-        extractFrames();
     }
-//    /**
-//     * constructor used for testing frame generator algorithm
-//     * takes in 2 images and inserts one between
-//     *
-//     * @param image1
-//     * @param image2
-//     */
-//    public MediaLoader(File image1, File image2){
-//        this.frames = new ArrayList<>();
-//        try{
-//            frames.add(ImageIO.read(image1));
-//            frames.add(ImageIO.read(image2));
-//        }catch(IOException e){
-//            e.printStackTrace();
-//        }
-//    }
 
     /**
+     * Creates an output folder in the same directory as test and will do all file manipulation in here
+     * and final finished video will be placed here
+     */
+    public void createOutputFolder(){
+        String folderLocation = this.inputFile.getParentFile().getAbsolutePath();
+        this.outputFile = new File(folderLocation + "/output");
+        this.outputFile.mkdir();
+    }
+
+    /**
+     * Runs entire enhancement algorithm based off of user submitted info stored in data members
+     *
+     * loops through compareFrames to generate inbetween frames for entire media file
+     *      Calls averagePixelValues to generate inbetween
+     *      Calls createImage to generate BufferedImage object
+     *      Calls insertFrame to add it to entire frame collection and moves up index
+     *      Move to next index and repeat
+     * Finally calls saveFile to save generatedMedia to users system
+     *
+     * @see #compareFrames(int, int)
+     * @see #averagePixelValues(int, int)
+     * @see #createImage(ArrayList, int, int)
+     * @see #insertFrame(BufferedImage, int)
+     * @see #saveFile()
+     */
+    public void enhance(){
+        extractFrames();
+        try {
+            for (int i = 0; i < fileLocations.size() - 1; i += 2) {
+                insertFrame(compareFrames(i, i + 1), i);
+            }
+        }catch(IOException e){
+            System.err.println("Something happened while I was working! Try again");
+            e.printStackTrace();
+        }
+        //saveFile();
+    }
+
+    /**
+     * User call extractFrames first before enhancing
      * filter out input media types
      */
     public void extractFrames(){
+        createOutputFolder();
         try{
-            //if input is a gif
             if(inputFile.exists()){
                 splitGif();
             }else{
@@ -64,56 +87,40 @@ public class MediaLoader {
     }
 
     /**
-     * MediaLoader getter and setter methods
-     *
-     */
-    public ArrayList<BufferedImage> getFrames() {
-        return frames;
-    }
-    public File getInputFile() {
-        return inputFile;
-    }
-    public File getOutputFile() {
-        return outputFile;
-    }
-
-    public void setInputFile(File inputFile) {
-        this.inputFile = inputFile;
-    }
-    public void setOutputFile(File outputFile) {
-        this.outputFile = outputFile;
-    }
-
-    /**
      * Extract frames from a gif
      */
     public void splitGif(){
-
+        //extract all frames and gets their file locations and puts them into arraylist data member
     }
 
     /**
-     * Runs entire enhancement algorithm based off of user submitted info stored in data members
+     * Takes a generated frame and saves it to output file and inserts its location to arraylist
      *
-     * loops through compareFrames to generate inbetween frames for entire media file
-     *      Calls averagePixelValues to generate inbetween
-     *      Calls createImage to generate BufferedImage object
-     *      Calls insertFrame to add it to entire frame collection and moves up index
-     *      Move to next index and repeat
-     * Finally calls saveFile to save generatedMedia to users system
+     * @param generated
+     * @param previousFrameIndex
      */
-    public void enhance(){
-        for(int i = 0; i < frames.size() - 1; i+=2){
-            insertFrame(compareFrames(i, i+1), i);
-        }
-    }
-
     public void insertFrame(BufferedImage generated, int previousFrameIndex){
-        this.frames.add(previousFrameIndex + 1, generated);
+        String fileOutput = this.outputFile.getAbsolutePath() + "/altFrame" + previousFrameIndex;
+        File outputFilePath = new File(fileOutput);
+        saveImage(generated, outputFilePath);
+
+        this.fileLocations.add(previousFrameIndex + 1, outputFilePath);
     }
 
-    public BufferedImage compareFrames(int firstIndex, int secondIndex){
-        FrameData frame1 = analyzeFrames(firstIndex, this.frames.get(firstIndex));
-        FrameData frame2 = analyzeFrames(secondIndex, this.frames.get(secondIndex));
+    /**
+     * Takes two file locations of images and returns a generated image by converting generated pixel values into a
+     * BufferedImage object
+     *
+     * @param firstIndex
+     * @param secondIndex
+     * @return
+     * @throws IOException
+     */
+    public BufferedImage compareFrames(int firstIndex, int secondIndex) throws IOException{
+        this.BIFrame1 = getBufferedImageAt(this.fileLocations.get(firstIndex));
+        this.BIFrame2 = getBufferedImageAt(this.fileLocations.get(secondIndex));
+        FrameData frame1 = analyzeFrames(firstIndex, this.BIFrame1);
+        FrameData frame2 = analyzeFrames(secondIndex, this.BIFrame2);
 
         ArrayList<ArrayList<Integer>> generated = new ArrayList<>();
 
@@ -129,8 +136,30 @@ public class MediaLoader {
     }
 
     /**
+     * Given file location, return Buffered Image Object
+     *
+     * @exception IOException should never occur unless user modifies files while program is running
+     * @param mediaLocation
+     * @return
+     */
+    public BufferedImage getBufferedImageAt( File mediaLocation ) throws IOException{
+        return ImageIO.read( mediaLocation );
+    }
+
+    /**
+     * Analyze image and generate data
+     * Takes index of frame to be analyzed
+     *
+     * @param frameIndex
+     */
+    public FrameData analyzeFrames( int frameIndex, BufferedImage image ){
+        FrameData data = new FrameData(frameIndex, image);
+        return data;
+    }
+
+    /**
      * Gets two pixel values as integers (argb format)
-     * @see FrameData storeImageData method
+     * @see FrameData#storeImageData(BufferedImage image)
      *
      * @param pixel1
      * @param pixel2
@@ -168,31 +197,48 @@ public class MediaLoader {
         return generatedImage;
     }
 
-    /**
-     * Analyze image and generate data
-     * Takes index of frame to be analyzed
-     *
-     * @param frameIndex
-     */
-    public FrameData analyzeFrames( int frameIndex, BufferedImage image ){
-        FrameData data = new FrameData(frameIndex, image);
-
-        return data;
-    }
+//    public void saveFile(){
+//
+//        try{
+//
+//            //ImageIO.write(generatedImage, "gif", this.inputFile);
+//        }catch(IOException e){
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
-     * Mainly used for testing
-     * Saves an image into the output folder (mostly to see the generated image without having to develop
-     * a ui to see the outputs)
+     * Used while processing images, saves an image into the output folder
      *
      * @param generatedImage
      */
-    public void saveImage( BufferedImage generatedImage ){
+    public void saveImage( BufferedImage generatedImage, File filePath ){
         try{
-            ImageIO.write(generatedImage, "jpg", this.outputFile);
+            ImageIO.write(generatedImage, "jpg", filePath);
         }catch(IOException e){
             e.printStackTrace();
         }
     }
-
 }
+
+
+//    /**
+//     * MediaLoader getter and setter methods
+//     *
+//     */
+//    public ArrayList<File> getFileLocations() {
+//        return fileLocations;
+//    }
+//    public File getInputFile() {
+//        return inputFile;
+//    }
+//    public File getOutputFile() {
+//        return outputFile;
+//    }
+//    public void setInputFile(File inputFile) {
+//        this.inputFile = inputFile;
+//    }
+//    public void setOutputFile(File outputFile) {
+//        this.outputFile = outputFile;
+//    }
+//
