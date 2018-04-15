@@ -1,3 +1,8 @@
+/**
+ * @author Ryan Yang
+ *
+ */
+
 package tech.ryanqyang;
 
 import java.awt.image.BufferedImage;

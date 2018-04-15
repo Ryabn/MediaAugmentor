@@ -1,7 +1,11 @@
+/**
+ * @author Ryan Yang
+ *
+ */
+
 package tech.ryanqyang;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -11,65 +15,105 @@ import static java.awt.image.BufferedImage.*;
 
 public class MediaLoader {
 
-    private File mediaFile;
+    private File outputFile;
+    private File inputFile;
     private ArrayList<BufferedImage> frames;
 
     /**
      * General constructor that takes in a media file and splits it into frames, if possible
      *
-     * @param input
+     * @param inputFile
      */
-    public MediaLoader(File input){
-        this.mediaFile = input;
-        try {
-            splitIntoFrames();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
+    public MediaLoader(File inputFile, File outputFile){
+        this.inputFile = inputFile;
+        this.outputFile = outputFile;
+        extractFrames();
     }
+//    /**
+//     * constructor used for testing frame generator algorithm
+//     * takes in 2 images and inserts one between
+//     *
+//     * @param image1
+//     * @param image2
+//     */
+//    public MediaLoader(File image1, File image2){
+//        this.frames = new ArrayList<>();
+//        try{
+//            frames.add(ImageIO.read(image1));
+//            frames.add(ImageIO.read(image2));
+//        }catch(IOException e){
+//            e.printStackTrace();
+//        }
+//    }
+
     /**
-     * constructor used for testing frame generator algorithm
-     * takes in 2 images and inserts one between
-     *
-     * @param image1
-     * @param image2
+     * filter out input media types
      */
-    public MediaLoader(File image1, File image2){
-        this.frames = new ArrayList<>();
+    public void extractFrames(){
         try{
-            frames.add(ImageIO.read(image1));
-            frames.add(ImageIO.read(image2));
-        }catch(IOException e){
+            //if input is a gif
+            if(inputFile.exists()){
+                splitGif();
+            }else{
+                System.err.println("File not found");
+            }
+        }catch(IllegalArgumentException e){
+            System.err.println("File type not supported");
             e.printStackTrace();
         }
     }
 
+    /**
+     * MediaLoader getter and setter methods
+     *
+     */
     public ArrayList<BufferedImage> getFrames() {
         return frames;
     }
+    public File getInputFile() {
+        return inputFile;
+    }
+    public File getOutputFile() {
+        return outputFile;
+    }
+
+    public void setInputFile(File inputFile) {
+        this.inputFile = inputFile;
+    }
+    public void setOutputFile(File outputFile) {
+        this.outputFile = outputFile;
+    }
 
     /**
-     * Take a media input filter it into images
-     *
+     * Extract frames from a gif
      */
-    public void splitIntoFrames() throws Exception{
-        //if gif
-        splitGif();
-
-//        try(mediaFile.canRead()){
-//
-//        }catch(IOException e){
-//
-//        }
-    }
     public void splitGif(){
 
     }
 
-    public void compareFrames(int firstIndex, int secondIndex){
+    /**
+     * Runs entire enhancement algorithm based off of user submitted info stored in data members
+     *
+     * loops through compareFrames to generate inbetween frames for entire media file
+     *      Calls averagePixelValues to generate inbetween
+     *      Calls createImage to generate BufferedImage object
+     *      Calls insertFrame to add it to entire frame collection and moves up index
+     *      Move to next index and repeat
+     * Finally calls saveFile to save generatedMedia to users system
+     */
+    public void enhance(){
+        for(int i = 0; i < frames.size() - 1; i+=2){
+            insertFrame(compareFrames(i, i+1), i);
+        }
+    }
+
+    public void insertFrame(BufferedImage generated, int previousFrameIndex){
+        this.frames.add(previousFrameIndex + 1, generated);
+    }
+
+    public BufferedImage compareFrames(int firstIndex, int secondIndex){
         FrameData frame1 = analyzeFrames(firstIndex, this.frames.get(firstIndex));
         FrameData frame2 = analyzeFrames(secondIndex, this.frames.get(secondIndex));
-
 
         ArrayList<ArrayList<Integer>> generated = new ArrayList<>();
 
@@ -81,7 +125,7 @@ public class MediaLoader {
                 generated.get(iX).add(iY, averagePixelValues(pixelValue1, pixelValue2));
             }
         }
-        BufferedImage created = createImage(generated, frame1.getWidth(), frame1.getHeight());
+        return createImage(generated, frame1.getWidth(), frame1.getHeight());
     }
 
     /**
@@ -117,7 +161,6 @@ public class MediaLoader {
     public BufferedImage createImage(ArrayList<ArrayList<Integer>> imageData, int width, int height){
         BufferedImage generatedImage = new BufferedImage(width, height, TYPE_INT_RGB);
         for(int iX = 0; iX < width; iX++){
-
             for(int iY = 0; iY < height; iY++){
                 generatedImage.setRGB(iX, iY, imageData.get(iX).get(iY));
             }
@@ -145,10 +188,8 @@ public class MediaLoader {
      * @param generatedImage
      */
     public void saveImage( BufferedImage generatedImage ){
-        File outputFile = new File("/Users/ryanyang/Desktop/frametest/output/test.jpg");
-
         try{
-            ImageIO.write(generatedImage, "jpg", outputFile);
+            ImageIO.write(generatedImage, "jpg", this.outputFile);
         }catch(IOException e){
             e.printStackTrace();
         }
