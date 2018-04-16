@@ -65,7 +65,7 @@ public class MediaLoader {
             System.err.println("Something happened while I was working! Try again");
             e.printStackTrace();
         }
-        //saveFile();
+        saveFile();
     }
 
     /**
@@ -75,22 +75,16 @@ public class MediaLoader {
     public void extractFrames(){
         createOutputFolder();
         try{
-            if(inputFile.exists()){
-                splitGif();
-            }else{
-                System.err.println("File not found");
-            }
+            GIFSetup gifFile = new GIFSetup(inputFile);
+            splitFrames(gifFile);
         }catch(IllegalArgumentException e){
             System.err.println("File type not supported");
             e.printStackTrace();
         }
     }
 
-    /**
-     * Extract frames from a gif
-     */
-    public void splitGif(){
-        //extract all frames and gets their file locations and puts them into arraylist data member
+    public void splitFrames(Splittable mediaToSplit){
+        mediaToSplit.splitIntoFrames(outputFile);
     }
 
     /**
@@ -197,15 +191,20 @@ public class MediaLoader {
         return generatedImage;
     }
 
-//    public void saveFile(){
-//
-//        try{
-//
-//            //ImageIO.write(generatedImage, "gif", this.inputFile);
-//        }catch(IOException e){
-//            e.printStackTrace();
-//        }
-//    }
+    /**
+     * Wraps up entire project by taking entire folder of generated images and converting it back into original media
+     * type (gif, mp4, etc.)
+     */
+    public void saveFile(){
+        //ImageIO.write(generatedImage, "gif", this.outputFile);
+        for(File frameToDelete : fileLocations){
+            if(frameToDelete.delete()){
+                System.out.print(" . ");
+            }else{
+                System.err.println("File did not delete: " + frameToDelete.getAbsolutePath());
+            }
+        }
+    }
 
     /**
      * Used while processing images, saves an image into the output folder
@@ -241,4 +240,3 @@ public class MediaLoader {
 //    public void setOutputFile(File outputFile) {
 //        this.outputFile = outputFile;
 //    }
-//
