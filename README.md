@@ -28,7 +28,7 @@ Example of basic algorithm (image taken from imgur i forgot the source please do
 
 Before / After
 <br>
-
-<img style="width:48%; float:left;" src="assets/basicGifTest.gif"/>
-<img style="width:48%; float:left;" src="assets/output/Mon Apr 16 15:06:08 PDT 2018.gif" />
-
+<p style="float:left;">
+<img style="width:200px;" src="assets/basicGifTest.gif"/>
+<img style="width:200px;" src="assets/output/Mon Apr 16 15:06:08 PDT 2018.gif" />
+</p>
