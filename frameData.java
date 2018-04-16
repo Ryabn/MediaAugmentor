@@ -39,12 +39,15 @@ public class FrameData {
     public int getFrameIndex() {
         return this.frameIndex;
     }
+
     public int getHeight() {
         return height;
     }
+
     public int getWidth() {
         return width;
     }
+
     public ArrayList<ArrayList<Integer>> getRGBValues() {
         return RGBValues;
     }

@@ -10,26 +10,28 @@ import java.io.File;
 public class Main {
 
     public static void main(String[] args) {
-//        File image1 = new File("/Users/ryanyang/Desktop/frametest/in1/frame1.jpg");
-//        File image2 = new File("/Users/ryanyang/Desktop/frametest/in1/frame2.jpg");
-//        File image3 = new File("/Users/ryanyang/Desktop/frametest/in1/frame3.jpg");
-//        File image4 = new File("/Users/ryanyang/Desktop/frametest/in1/frame4.jpg");
-        File testGif = new File("/Users/ryanyang/Desktop/frametest/newtest/test1.gif");
-        //File outputFile = new File("/Users/ryanyang/Desktop/frametest/output");
 
-        MediaLoader test = new MediaLoader(testGif);
+        gifEnhanceBasicTest();
+        //gifEnhanceMLTest();
 
+    }
+
+
+    /**
+     * Runs a test on doubling the frame rate of a gif using the basic algorithm
+     */
+    static void gifEnhanceBasicTest(){
+        File testFile = new File("/Users/ryanyang/Desktop/frametest/newtest/test1.gif");
+        BasicEnhanceAlgorithm test = new BasicEnhanceAlgorithm( testFile );
         test.enhance();
+    }
 
-        //GIFSetup test1 = new GIFSetup(testGif);
-        //test1.splitIntoFrames(new File("/Users/ryanyang/Desktop/frametest/newtest/output"));
-
-        //test.enhance();
-
-        //test.compareFrames( 0 , 1 );
-        //BufferedImage imageGenerated = test.getFrames().get(1);
-
-        //test.saveImage(imageGenerated);
-
+    /**
+     * Runs a test on doubling the frame rate of a gif using the machine learning algorithm
+     */
+    static void gifEnhanceMLTest(){
+        File testFile = new File("/Users/ryanyang/Desktop/frametest/newtest/test1.gif");
+        MLEnhanceAlgorithm test = new MLEnhanceAlgorithm( testFile );
+        test.enhance();
     }
 }

@@ -10,12 +10,11 @@ import javax.imageio.stream.ImageInputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class GIFSetup implements Splittable{
+
     private File inputFile;
     private int frameCount;
     private int delay = 10;
@@ -34,9 +33,6 @@ public class GIFSetup implements Splittable{
     }
 
     /**
-     * Taken from
-     * https://stackoverflow.com/questions/8933893/convert-each-animated-gif-frame-to-a-separate-bufferedimage/17269591#17269591
-     *
      * Info on what meta data exists in gif and what to extract
      * http://www.matthewflickinger.com/lab/whatsinagif/bits_and_bytes.asp
      *
@@ -64,11 +60,7 @@ public class GIFSetup implements Splittable{
                 BufferedImage image = reader.read(i);
                 IIOMetadata metadata = reader.getImageMetadata(i);
 
-
-
                 Node tree = metadata.getAsTree("javax_imageio_gif_image_1.0");
-
-
 
                 NodeList children = tree.getChildNodes();
 
@@ -82,14 +74,9 @@ public class GIFSetup implements Splittable{
                 }
 
                 for (int j = 0; j < children.getLength(); j++) {
-
-
                     Node nodeItem = children.item(j);
-
-
                     if(nodeItem.getNodeName().equals("ImageDescriptor")){
                         Map<String, Integer> imageAttr = new HashMap<String, Integer>();
-
                         for (int k = 0; k < imageatt.length; k++) {
                             NamedNodeMap attr = nodeItem.getAttributes();
                             Node attnode = attr.getNamedItem(imageatt[k]);
@@ -110,7 +97,10 @@ public class GIFSetup implements Splittable{
                         );
                     }
                 }
-                ImageIO.write(master, "JPG", new File( outputLocation.getAbsolutePath() + "/" + (i*2) + ".jpg"));
+                ImageIO.write(master,
+                        "JPG",
+                        new File( outputLocation.getAbsolutePath() + "/" + (i*2) + ".jpg")
+                );
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -15,21 +15,46 @@ import java.util.ArrayList;
 
 import static java.awt.image.BufferedImage.*;
 
-public class MediaLoader {
-    private File inputFile;
-    private File outputFile;
-    private BufferedImage BIFrame1;
-    private BufferedImage BIFrame2;
-    private int frameDelay;
-    private ArrayList<File> fileLocations;
+public class BasicEnhanceAlgorithm{
+
+    protected File inputFile;
+    protected File outputFile;
+    protected BufferedImage BIFrame1;
+    protected BufferedImage BIFrame2;
+    protected int frameDelay;
+    protected ArrayList<File> fileLocations;
 
     /**
      * MediaLoader constructor
      *
      * @param inputFile
      */
-    public MediaLoader(File inputFile){
+    public BasicEnhanceAlgorithm(File inputFile){
         this.inputFile = inputFile;
+    }
+
+    /**
+     * MediaLoader getter and setter methods
+     *
+     */
+    public ArrayList<File> getFileLocations() {
+        return fileLocations;
+    }
+
+    public File getInputFile() {
+        return inputFile;
+    }
+
+    public File getOutputFile() {
+        return outputFile;
+    }
+
+    public void setInputFile(File inputFile) {
+        this.inputFile = inputFile;
+    }
+
+    public void setOutputFile(File outputFile) {
+        this.outputFile = outputFile;
     }
 
     /**
@@ -69,7 +94,6 @@ public class MediaLoader {
             System.err.println("Something happened while I was working! Try again");
             e.printStackTrace();
         }
-
     }
 
     /**
@@ -87,6 +111,11 @@ public class MediaLoader {
         }
     }
 
+    /**
+     * Splits the object into frames and saves into the output folder to be manipulated
+     *
+     * @param mediaToSplit
+     */
     public void splitFrames(Splittable mediaToSplit){
         this.fileLocations = new ArrayList<>();
         mediaToSplit.splitIntoFrames(outputFile);
@@ -240,24 +269,3 @@ public class MediaLoader {
         }
     }
 }
-
-
-//    /**
-//     * MediaLoader getter and setter methods
-//     *
-//     */
-//    public ArrayList<File> getFileLocations() {
-//        return fileLocations;
-//    }
-//    public File getInputFile() {
-//        return inputFile;
-//    }
-//    public File getOutputFile() {
-//        return outputFile;
-//    }
-//    public void setInputFile(File inputFile) {
-//        this.inputFile = inputFile;
-//    }
-//    public void setOutputFile(File outputFile) {
-//        this.outputFile = outputFile;
-//    }
