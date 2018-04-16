@@ -6,6 +6,8 @@
 package tech.ryanqyang;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageOutputStream;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +20,7 @@ public class MediaLoader {
     private File outputFile;
     private BufferedImage BIFrame1;
     private BufferedImage BIFrame2;
+    private int frameDelay;
     private ArrayList<File> fileLocations;
 
     /**
@@ -61,11 +64,12 @@ public class MediaLoader {
             for (int i = 0; i < fileLocations.size() - 1; i += 2) {
                 insertFrame(compareFrames(i, i + 1), i);
             }
+            saveFile();
         }catch(IOException e){
             System.err.println("Something happened while I was working! Try again");
             e.printStackTrace();
         }
-        saveFile();
+
     }
 
     /**
@@ -90,6 +94,7 @@ public class MediaLoader {
             String filePathName = outputFile.getAbsolutePath() + "/" + (i * 2) + ".jpg";
             fileLocations.add(new File(filePathName));
         }
+        this.frameDelay = mediaToSplit.getDelay();
     }
 
     /**
@@ -200,8 +205,19 @@ public class MediaLoader {
      * Wraps up entire project by taking entire folder of generated images and converting it back into original media
      * type (gif, mp4, etc.)
      */
-    public void saveFile(){
-        //ImageIO.write(generatedImage, "gif", this.outputFile);
+    public void saveFile() throws IOException {
+        ImageOutputStream output = new FileImageOutputStream(new File(this.outputFile.getAbsolutePath() + "/final.gif"));
+
+        GifSequenceWriter writer = new GifSequenceWriter(output, TYPE_INT_RGB, this.frameDelay/2, false);
+
+        for(int i = 0; i < fileLocations.size() - 1; i++) {
+            BufferedImage nextImage = ImageIO.read(fileLocations.get(i));
+            writer.writeToSequence(nextImage);
+        }
+
+        writer.close();
+        output.close();
+
         for(File frameToDelete : fileLocations){
             if(frameToDelete.delete()){
                 System.out.print(" . ");

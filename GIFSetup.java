@@ -18,7 +18,7 @@ import java.util.Map;
 public class GIFSetup implements Splittable{
     private File inputFile;
     private int frameCount;
-    private int delay;
+    private int delay = 10;
 
     public GIFSetup(File inputFile){
         this.inputFile = inputFile;
@@ -27,6 +27,10 @@ public class GIFSetup implements Splittable{
     @Override
     public int getFrameCount() {
         return frameCount;
+    }
+    @Override
+    public int getDelay() {
+        return delay;
     }
 
     /**
@@ -68,19 +72,18 @@ public class GIFSetup implements Splittable{
 
                 NodeList children = tree.getChildNodes();
 
+                if(children.item(1).getNodeName().equals("GraphicControlExtension")) {
+                    NamedNodeMap attr = children.item(1).getAttributes();
+                    for (int k = 0; k < attr.getLength(); k++) {
+                        if(attr.item(k).getNodeName().equals("delayTime")) {
+                            this.delay = Integer.parseInt(attr.item(k).getNodeValue());
+                        }
+                    }
+                }
 
                 for (int j = 0; j < children.getLength(); j++) {
 
-                    if(i == 3){
-                        if(children.item(1).getNodeName().equals("GraphicControlExtension")) {
-                            NamedNodeMap attr = children.item(1).getAttributes();
-                            for (int k = 0; k < attr.getLength(); k++) {
-                                System.out.println(attr.item(k).getNodeName());
-                                System.out.println(attr.item(k).getNodeValue());
 
-                            }
-                        }
-                    }
                     Node nodeItem = children.item(j);
 
 
