@@ -28,10 +28,6 @@ public class FrameData {
         storeImageData(image);
     }
 
-    public FrameData(){
-
-    }
-
     /**
      * getters for data members
      *

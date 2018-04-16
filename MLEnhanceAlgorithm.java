@@ -15,8 +15,7 @@ public class MLEnhanceAlgorithm extends BasicEnhanceAlgorithm{
     }
 
     /**
-     * Takes two file locations of images and returns a generated image by converting generated pixel values into a
-     * BufferedImage object
+     *
      *
      * @param firstIndex
      * @param secondIndex
@@ -24,7 +23,7 @@ public class MLEnhanceAlgorithm extends BasicEnhanceAlgorithm{
      * @throws IOException
      */
     @Override
-    public BufferedImage compareFrames(int firstIndex, int secondIndex) throws IOException{
+    public BufferedImage generateImage(int firstIndex, int secondIndex) throws IOException{
         this.BIFrame1 = getBufferedImageAt(this.fileLocations.get(firstIndex));
         this.BIFrame2 = getBufferedImageAt(this.fileLocations.get(secondIndex));
         FrameData frame1 = analyzeFrames(firstIndex, this.BIFrame1);

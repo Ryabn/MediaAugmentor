@@ -71,14 +71,14 @@ public class BasicEnhanceAlgorithm{
     /**
      * Runs entire enhancement algorithm based off of user submitted info stored in data members
      *
-     * loops through compareFrames to generate inbetween frames for entire media file
+     * loops through generateImage to generate inbetween frames for entire media file
      *      Calls averagePixelValues to generate inbetween
      *      Calls createImage to generate BufferedImage object
      *      Calls insertFrame to add it to entire frame collection and moves up index
      *      Move to next index and repeat
      * Finally calls saveFile to save generatedMedia to users system
      *
-     * @see #compareFrames(int, int)
+     * @see #generateImage(int, int)
      * @see #averagePixelValues(int, int)
      * @see #createImage(ArrayList, int, int)
      * @see #insertFrame(BufferedImage, int)
@@ -88,7 +88,7 @@ public class BasicEnhanceAlgorithm{
         extractFrames();
         try {
             for (int i = 0; i < fileLocations.size() - 1; i += 2) {
-                insertFrame(compareFrames(i, i + 1), i);
+                insertFrame(generateImage(i, i + 1), i);
             }
             saveFile();
         }catch(IOException e){
@@ -150,7 +150,7 @@ public class BasicEnhanceAlgorithm{
      * @return
      * @throws IOException
      */
-    public BufferedImage compareFrames(int firstIndex, int secondIndex) throws IOException{
+    public BufferedImage generateImage(int firstIndex, int secondIndex) throws IOException{
         this.BIFrame1 = getBufferedImageAt(this.fileLocations.get(firstIndex));
         this.BIFrame2 = getBufferedImageAt(this.fileLocations.get(secondIndex));
         FrameData frame1 = analyzeFrames(firstIndex, this.BIFrame1);
