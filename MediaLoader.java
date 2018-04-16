@@ -75,7 +75,7 @@ public class MediaLoader {
     public void extractFrames(){
         createOutputFolder();
         try{
-            GIFSetup gifFile = new GIFSetup(inputFile);
+            GIFSetup gifFile = new GIFSetup(this.inputFile);
             splitFrames(gifFile);
         }catch(IllegalArgumentException e){
             System.err.println("File type not supported");
@@ -84,7 +84,12 @@ public class MediaLoader {
     }
 
     public void splitFrames(Splittable mediaToSplit){
+        this.fileLocations = new ArrayList<>();
         mediaToSplit.splitIntoFrames(outputFile);
+        for(int i = 0; i < mediaToSplit.getFrameCount(); i++){
+            String filePathName = outputFile.getAbsolutePath() + "/" + (i * 2) + ".jpg";
+            fileLocations.add(new File(filePathName));
+        }
     }
 
     /**
@@ -94,7 +99,7 @@ public class MediaLoader {
      * @param previousFrameIndex
      */
     public void insertFrame(BufferedImage generated, int previousFrameIndex){
-        String fileOutput = this.outputFile.getAbsolutePath() + "/altFrame" + previousFrameIndex;
+        String fileOutput = this.outputFile.getAbsolutePath() + "/" + (previousFrameIndex + 1) + ".jpg";
         File outputFilePath = new File(fileOutput);
         saveImage(generated, outputFilePath);
 

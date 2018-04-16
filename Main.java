@@ -17,10 +17,12 @@ public class Main {
         File testGif = new File("/Users/ryanyang/Desktop/frametest/newtest/test1.gif");
         //File outputFile = new File("/Users/ryanyang/Desktop/frametest/output");
 
-        //MediaLoader test = new MediaLoader(testGif);
+        MediaLoader test = new MediaLoader(testGif);
 
-        GIFSetup test1 = new GIFSetup(testGif);
-        test1.splitIntoFrames(new File("/Users/ryanyang/Desktop/frametest/newtest/output"));
+        test.enhance();
+
+        //GIFSetup test1 = new GIFSetup(testGif);
+        //test1.splitIntoFrames(new File("/Users/ryanyang/Desktop/frametest/newtest/output"));
 
         //test.enhance();
 
