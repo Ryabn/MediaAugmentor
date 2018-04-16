@@ -26,9 +26,7 @@ Finally, call the enhance method
 ***
 Example of basic algorithm (image taken from imgur i forgot the source please don't sue):
 
-Before: 
-<img src="assets/test1.gif" width="100%"/>
-
-After:
-<img src="assets/final.gif" width="100%"/>
+Before / After
+<img src="assets/basicGifTest.gif" width="48%" float="left"/>
+<img src="assets/output/Mon Apr 16 15:06:08 PDT 2018.gif" width="48%" float="left"/>
 

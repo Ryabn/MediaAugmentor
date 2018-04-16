@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //gifEnhanceBasicTest();
+        gifEnhanceBasicTest();
 
         //gifEnhanceMLTest();
 
@@ -21,7 +21,8 @@ public class Main {
      * Runs a test on doubling the frame rate of a gif using the basic algorithm
      */
     static void gifEnhanceBasicTest(){
-        File testFile = new File("/Users/ryanyang/Desktop/frametest/newtest/test1.gif");
+        File testFile =
+                new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/basicGifTest.gif");
         BasicEnhanceAlgorithm test = new BasicEnhanceAlgorithm( testFile );
         test.enhance();
     }

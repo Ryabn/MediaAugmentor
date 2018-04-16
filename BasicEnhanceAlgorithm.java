@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static java.awt.image.BufferedImage.*;
 
@@ -235,9 +236,15 @@ public class BasicEnhanceAlgorithm{
      * type (gif, mp4, etc.)
      */
     public void saveFile() throws IOException {
-        ImageOutputStream output = new FileImageOutputStream(new File(this.outputFile.getAbsolutePath() + "/final.gif"));
+        ImageOutputStream output = new FileImageOutputStream(
+                new File(
+                this.outputFile.getAbsolutePath()
+                        + "/"
+                        + new Date()
+                        + ".gif")
+        );
 
-        GifSequenceWriter writer = new GifSequenceWriter(output, TYPE_INT_RGB, this.frameDelay/2, false);
+        GifSequenceWriter writer = new GifSequenceWriter(output, TYPE_INT_RGB, this.frameDelay/2, true);
 
         for(int i = 0; i < fileLocations.size() - 1; i++) {
             BufferedImage nextImage = ImageIO.read(fileLocations.get(i));
@@ -249,7 +256,6 @@ public class BasicEnhanceAlgorithm{
 
         for(File frameToDelete : fileLocations){
             if(frameToDelete.delete()){
-                System.out.print(" . ");
             }else{
                 System.err.println("File did not delete: " + frameToDelete.getAbsolutePath());
             }
