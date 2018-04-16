@@ -11,11 +11,11 @@ public class Main {
 
     public static void main(String[] args) {
 
-        gifEnhanceBasicTest();
+        //gifEnhanceBasicTest();
+
         //gifEnhanceMLTest();
 
     }
-
 
     /**
      * Runs a test on doubling the frame rate of a gif using the basic algorithm

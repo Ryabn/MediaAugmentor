@@ -1,12 +1,34 @@
 # MediaAugmentor
 
-This readme is currently just for myself so I can talk about all the ways I'm going to go about this program. 
-
+Java program that takes a media input (currently only GIF's supported) and doubles
+ the frame rate of the media by generating frames in between frames.
 <br>
 
-The point of this program is that it's going to take in a media file of some type (gif, mp4, etc.) and generate frames 
-between frames and double the frame rate.
-
+The basic algorithm generates a frame by averaging pixel values between frames. The frame
+generated looks like setting the transparency of both frames to 50% and overlaying them on
+top of each other.
 <br>
 
-using opencv to read and analyze the images and we'll work from there.
+The basic algorithm can be called this way (in the main method):
+
+***
+
+First create a File object with a path to the media file you want to enhance
+>File testFile = new File("/file/to/image.gif");
+
+Then, create a BasicEnhanceAlgorithm object with the file
+
+> BasicEnhanceAlgorithm test = new BasicEnhanceAlgorithm( testFile );
+
+Finally, call the enhance method
+> test.enhance();
+
+***
+Example of basic algorithm (image taken from imgur i forgot the source please don't sue):
+
+Before: 
+<img src="assets/test1.gif" width="100%"/>
+
+After:
+<img src="assets/final.gif" width="100%"/>
+
