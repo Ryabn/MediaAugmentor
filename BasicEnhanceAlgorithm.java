@@ -71,8 +71,8 @@ public class BasicEnhanceAlgorithm{
     /**
      * Runs entire enhancement algorithm based off of user submitted info stored in data members
      *
-     * loops through generateImage to generate inbetween frames for entire media file
-     *      Calls averagePixelValues to generate inbetween
+     * loops through generateImage to generate in between frames for entire media file
+     *      Calls averagePixelValues to generate in between
      *      Calls createImage to generate BufferedImage object
      *      Calls insertFrame to add it to entire frame collection and moves up index
      *      Move to next index and repeat
@@ -245,7 +245,6 @@ public class BasicEnhanceAlgorithm{
         );
 
         GifSequenceWriter writer = new GifSequenceWriter(output, TYPE_INT_RGB, this.frameDelay/2, true);
-
         for(int i = 0; i < fileLocations.size() - 1; i++) {
             BufferedImage nextImage = ImageIO.read(fileLocations.get(i));
             writer.writeToSequence(nextImage);

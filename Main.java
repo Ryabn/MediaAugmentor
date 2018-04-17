@@ -6,15 +6,25 @@
 package tech.ryanqyang;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Main {
 
     public static void main(String[] args) {
-
-        gifEnhanceBasicTest();
-
+        //gifEnhanceBasicTest();
         //gifEnhanceMLTest();
 
+        File testFile = new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/basicGifTest.gif");
+        MLEnhanceAlgorithm test = new MLEnhanceAlgorithm( testFile );
+
+        test.enhance();
+//        test.extractFrames();
+//        try {
+//            File output = new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/output/testpicture.jpg");
+//            test.saveImage( test.generateImage( 0, 2 ), output );
+//        } catch ( IOException e ) {
+//            e.printStackTrace();
+//        }
     }
 
     /**
@@ -22,7 +32,7 @@ public class Main {
      */
     static void gifEnhanceBasicTest(){
         File testFile =
-                new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/basicGifTest.gif");
+                new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/basicGifTest2.gif");
         BasicEnhanceAlgorithm test = new BasicEnhanceAlgorithm( testFile );
         test.enhance();
     }
@@ -31,7 +41,7 @@ public class Main {
      * Runs a test on doubling the frame rate of a gif using the machine learning algorithm
      */
     static void gifEnhanceMLTest(){
-        File testFile = new File("/Users/ryanyang/Desktop/frametest/newtest/test1.gif");
+        File testFile = new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/basicGifTest2.gif");
         MLEnhanceAlgorithm test = new MLEnhanceAlgorithm( testFile );
         test.enhance();
     }

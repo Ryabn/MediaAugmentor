@@ -15,7 +15,7 @@ public class MLEnhanceAlgorithm extends BasicEnhanceAlgorithm{
     }
 
     /**
-     *
+     * ML algorithm for generating image
      *
      * @param firstIndex
      * @param secondIndex
@@ -24,6 +24,7 @@ public class MLEnhanceAlgorithm extends BasicEnhanceAlgorithm{
      */
     @Override
     public BufferedImage generateImage(int firstIndex, int secondIndex) throws IOException{
+
         this.BIFrame1 = getBufferedImageAt(this.fileLocations.get(firstIndex));
         this.BIFrame2 = getBufferedImageAt(this.fileLocations.get(secondIndex));
         FrameData frame1 = analyzeFrames(firstIndex, this.BIFrame1);
@@ -40,30 +41,6 @@ public class MLEnhanceAlgorithm extends BasicEnhanceAlgorithm{
             }
         }
         return createImage(generated, frame1.getWidth(), frame1.getHeight());
-    }
-
-    /**
-     * Given file location, return Buffered Image Object
-     *
-     * @exception IOException should never occur unless user modifies files while program is running
-     * @param mediaLocation
-     * @return
-     */
-    @Override
-    public BufferedImage getBufferedImageAt( File mediaLocation ) throws IOException{
-        return ImageIO.read( mediaLocation );
-    }
-
-    /**
-     * Analyze image and generate data
-     * Takes index of frame to be analyzed
-     *
-     * @param frameIndex
-     */
-    @Override
-    public FrameData analyzeFrames( int frameIndex, BufferedImage image ){
-        FrameData data = new FrameData(frameIndex, image);
-        return data;
     }
 
     /**
@@ -87,25 +64,11 @@ public class MLEnhanceAlgorithm extends BasicEnhanceAlgorithm{
         int g2 = (pixel2 >> 8) & 0xff;
         int b2 = (pixel2) & 0xff;
 
-        //return (( (a1+a2)/2 << 24 ) | ( (r1+r2)/2 << 16 ) | ( (g1+g2)/2 << 8 ) | (b1+b2)/2);
-        return 200;
-    }
 
-    /**
-     * Turn 2d arraylist of pixel values into a BufferedImage object
-     *
-     * @param imageData
-     * @param width
-     * @param height
-     */
-    @Override
-    public BufferedImage createImage(ArrayList<ArrayList<Integer>> imageData, int width, int height){
-        BufferedImage generatedImage = new BufferedImage(width, height, TYPE_INT_RGB);
-        for(int iX = 0; iX < width; iX++){
-            for(int iY = 0; iY < height; iY++){
-                generatedImage.setRGB(iX, iY, imageData.get(iX).get(iY));
-            }
+        if(Math.abs(a1-a2) > 50|| Math.abs(r1-r2) > 50 || Math.abs(g1-g2) > 50 || Math.abs(b1-b2) > 50 ){
+            return 6291200;
         }
-        return generatedImage;
+        //return (( (a1+a2)/2 << 24 ) | ( (r1+r2)/2 << 16 ) | ( (g1+g2)/2 << 8 ) | (b1+b2)/2);
+        return pixel1;
     }
 }
