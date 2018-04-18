@@ -14,8 +14,8 @@ public class Main {
         //gifEnhanceBasicTest();
         //gifEnhanceMLTest();
 
-        File testFile = new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/basicGifTest.gif");
-        MLEnhanceAlgorithm test = new MLEnhanceAlgorithm( testFile );
+        File testFile = new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/output/gifTest4.gif");
+        BasicEnhanceAlgorithm test = new BasicEnhanceAlgorithm( testFile );
 
         test.enhance();
 //        test.extractFrames();

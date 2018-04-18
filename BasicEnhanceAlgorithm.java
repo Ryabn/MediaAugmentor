@@ -243,13 +243,11 @@ public class BasicEnhanceAlgorithm{
                         + new Date()
                         + ".gif")
         );
-
         GifSequenceWriter writer = new GifSequenceWriter(output, TYPE_INT_RGB, this.frameDelay/2, true);
         for(int i = 0; i < fileLocations.size() - 1; i++) {
             BufferedImage nextImage = ImageIO.read(fileLocations.get(i));
             writer.writeToSequence(nextImage);
         }
-
         writer.close();
         output.close();
 

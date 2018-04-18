@@ -76,7 +76,7 @@ public class GIFSetup implements Splittable{
                 for (int j = 0; j < children.getLength(); j++) {
                     Node nodeItem = children.item(j);
                     if(nodeItem.getNodeName().equals("ImageDescriptor")){
-                        Map<String, Integer> imageAttr = new HashMap<String, Integer>();
+                        Map<String, Integer> imageAttr = new HashMap<>();
                         for (int k = 0; k < imageatt.length; k++) {
                             NamedNodeMap attr = nodeItem.getAttributes();
                             Node attnode = attr.getNamedItem(imageatt[k]);

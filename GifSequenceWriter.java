@@ -1,4 +1,5 @@
-package tech.ryanqyang;//
+package tech.ryanqyang;
+
 //  GifSequenceWriter.java
 //  
 //  Created by Elliot Kroo on 2009-04-25.
@@ -32,6 +33,7 @@ public class GifSequenceWriter {
    *
    * @author Elliot Kroo (elliot[at]kroo[dot]net)
    */
+
   public GifSequenceWriter(
       ImageOutputStream outputStream,
       int imageType,
@@ -63,7 +65,7 @@ public class GifSequenceWriter {
       "FALSE");
     graphicsControlExtensionNode.setAttribute(
       "delayTime",
-      Integer.toString(timeBetweenFramesMS / 10));
+      Integer.toString(timeBetweenFramesMS));
     graphicsControlExtensionNode.setAttribute(
       "transparentColorIndex",
       "0");
