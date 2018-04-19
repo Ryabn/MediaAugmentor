@@ -14,10 +14,11 @@ public class Main {
         //gifEnhanceBasicTest();
         //gifEnhanceMLTest();
 
-        File testFile = new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/output/gifTest4.gif");
-        BasicEnhanceAlgorithm test = new BasicEnhanceAlgorithm( testFile );
+        File testFile = new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/basicGifTest2.gif");
+        MLEnhanceAlgorithm test = new MLEnhanceAlgorithm( testFile );
 
-        test.enhance();
+        //test.enhance();
+        test.edgeDetection();
 //        test.extractFrames();
 //        try {
 //            File output = new File("/Users/ryanyang/Desktop/Workspace/CS003B/MediaAugmentor/src/tech/ryanqyang/assets/output/testpicture.jpg");
